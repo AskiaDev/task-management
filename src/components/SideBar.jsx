@@ -10,8 +10,11 @@ const SideBar = ({
   selectedProjectId,
   handleShowProjects,
   showMenuProjects,
+  projects,
 }) => {
-  const [isMediumScreen, setIsMediumScreen] = useState(window.innerWidth >= 768);
+  const [isMediumScreen, setIsMediumScreen] = useState(
+    window.innerWidth >= 768
+  );
 
   useEffect(() => {
     const handleResize = () => {
@@ -25,26 +28,16 @@ const SideBar = ({
     };
   }, []);
 
-
-
-  let projectList = localStorage.getItem("projects");
-  if (projectList) {
-    projectList = JSON.parse(projectList);
-  } else {
-    projectList = [];
-  }
-
   return (
     <>
       <GiHamburgerMenu
-        className={`block md:hidden z-20 ${showMenuProjects ? "text-primary" : "text-dark"
-          } cursor-pointer m-3 w-8 h-8`}
+        className={`block md:hidden z-20 ${
+          showMenuProjects ? "text-primary" : "text-dark"
+        } cursor-pointer m-3 w-8 h-8`}
         onClick={handleShowProjects}
       />
       {(showMenuProjects || isMediumScreen) && (
-        <aside
-          className="bg-dark absolute md:static md:block p-4 md:rounded-r-3xl md:w-1/4 md:px-8 md:py-16 h-screen"
-        >
+        <aside className="bg-dark absolute md:static md:block p-4 md:rounded-r-3xl md:w-1/4 md:px-8 md:py-16 h-screen">
           <h2 className=" pt-10 text-3xl font-semibold tracking-tighter text-primary uppercase">
             Your projects
           </h2>
@@ -58,7 +51,7 @@ const SideBar = ({
             New Project
           </Button>
           <ul className="mt-5">
-            {projectList.map((project, idx) => (
+            {projects.map((project, idx) => (
               <Projects
                 handleSelectProject={handleSelectProject}
                 key={idx}

@@ -4,25 +4,29 @@ import Modal from "./Modal";
 import { FaTimesCircle } from "react-icons/fa";
 import Input from "./Input";
 
-const Form = ({ handleAddProject, handleCancelBtn }) => {
-  const pNameRef = useRef();
-  const pDescRef = useRef();
-  const pDateRef = useRef();
+const Form = ({
+  handleAddProject,
+  userToEdit,
+  handleCancelBtn,
+  handleUpdate,
+  pname,
+  pdesc,
+  pdate,
+  setPdate,
+  setPname,
+  setPdesc,
+}) => {
   const modalRef = useRef();
-
   function handleSubmit(e) {
     e.preventDefault();
 
-    const projectName = pNameRef.current.value;
-    const projectDescription = pDescRef.current.value;
-    const projectDate = pDateRef.current.value;
-
-    if (projectName === "" || projectDescription === "" || projectDate === "") {
+    if (pname === "" || pdesc === "" || pdate === "") {
       modalRef.current.open();
       return;
     }
 
-    handleAddProject(projectName, projectDescription, projectDate);
+    handleAddProject(pname, pdesc, pdate);
+    console.log(pname, pdesc, pdate);
   }
 
   return (
@@ -43,29 +47,54 @@ const Form = ({ handleAddProject, handleCancelBtn }) => {
         >
           Cancel
         </Button>
-        <Button
-          onClick={handleSubmit}
-          type="submit"
-          className="text-dark px-6 py-2 rounded-md"
-          variant="secondary"
-          size="small"
-        >
-          Save
-        </Button>
+        {userToEdit ? (
+          <Button
+            onClick={handleUpdate}
+            type="submit"
+            className="text-dark px-6 py-2 rounded-md"
+            variant="secondary"
+            size="small"
+          >
+            Update
+          </Button>
+        ) : (
+          <Button
+            onClick={handleSubmit}
+            type="submit"
+            className="text-dark px-6 py-2 rounded-md"
+            variant="secondary"
+            size="small"
+          >
+            Save
+          </Button>
+        )}
       </menu>
       <div>
         <form className="p-4">
-          <Input type='text' label='Project name' ref={pNameRef} className="w-full mt-2 px-4 py-2 rounded-md border border-dark text-dark bg-stone-50" />
+          <Input
+            type="text"
+            label="Project name"
+            value={pname}
+            onChange={(e) => setPname(e.target.value)}
+            className="w-full mt-2 px-4 py-2 rounded-md border border-dark text-dark bg-stone-50"
+          />
           <label className="block mt-8 text-dark font-semibold">
             Project description
           </label>
           <textarea
             className="w-full mt-2 px-4 py-2 rounded-md border border-dark text-dark bg-stone-50"
             rows="5"
-            ref={pDescRef}
+            value={pdesc}
+            onChange={(e) => setPdesc(e.target.value)}
           ></textarea>
           {/* date */}
-          <Input type='date' label='Due date' ref={pDateRef} className="w-full mt-2 px-4 py-2 rounded-md border border-dark text-dark bg-stone-50" />
+          <Input
+            type="date"
+            label="Due date"
+            value={pdate}
+            onChange={(e) => setPdate(e.target.value)}
+            className="w-full mt-2 px-4 py-2 rounded-md border border-dark text-dark bg-stone-50"
+          />
         </form>
       </div>
     </>
